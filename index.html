@@ -1,44 +1,506 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Age Calculator – Free Online Tool</title>
-<meta name="description" content="Calculate your exact age in years using our free online age calculator.">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Tool Hub - All-in-One Digital Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<style>
-body { font-family: Arial; background:#f5f6f7; padding:20px; }
-.box { max-width:600px; margin:auto; background:#fff; padding:20px; border-radius:8px; }
-button { background:#1da1f2; color:#fff; border:none; padding:10px; width:100%; margin-top:10px; }
-input { padding:10px; width:100%; }
-</style>
+        body {
+            background-color: #1E1E2F;
+            color: #EAEAEA;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2B2D42;
+            padding: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            color: #FFD700;
+            font-size: 28px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #FFD700, #FFEC8B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        .tagline {
+            font-size: 14px;
+            color: #B0B0C0;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+            background: radial-gradient(circle at top center, #2A2C40, #1E1E2F);
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #CCCCDD;
+        }
+
+        /* Tools Grid */
+        .tools-section {
+            padding: 40px 0 80px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+            position: relative;
+            color: #FFD700;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: #FFD700;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        /* Tool Card */
+        .tool-card {
+            background-color: #3A3D5B;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .tool-card:hover {
+            background-color: #FFD700;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.25);
+        }
+
+        .tool-card:hover .tool-title,
+        .tool-card:hover .tool-description {
+            color: #1E1E2F;
+        }
+
+        .tool-icon {
+            font-size: 40px;
+            color: #FFD700;
+            margin-bottom: 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tool-card:hover .tool-icon {
+            color: #1E1E2F;
+        }
+
+        .tool-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #FFD700;
+            transition: color 0.3s ease;
+        }
+
+        .tool-description {
+            color: #CCCCDD;
+            margin-bottom: 25px;
+            flex-grow: 1;
+            transition: color 0.3s ease;
+        }
+
+        /* Button Styling */
+        .tool-button {
+            background-color: #FFD700;
+            color: #1E1E2F;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .tool-button:hover {
+            background-color: #E6C200;
+            transform: scale(1.05);
+        }
+
+        .tool-card:hover .tool-button {
+            background-color: #1E1E2F;
+            color: #FFD700;
+        }
+
+        .tool-card:hover .tool-button:hover {
+            background-color: #0F0F1A;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2B2D42;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .footer-content p {
+            color: #B0B0C0;
+            margin-bottom: 10px;
+        }
+
+        .copyright {
+            font-size: 14px;
+            color: #8888A0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 17px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .hero h2 {
+                font-size: 28px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .tool-card {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .logo {
+                justify-content: center;
+            }
+            
+            .hero {
+                padding: 40px 0 30px;
+            }
+            
+            .hero h2 {
+                font-size: 26px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 26px;
+            }
+            
+            .tool-title {
+                font-size: 20px;
+            }
+            
+            .tool-card {
+                padding: 20px;
+            }
+        }
+
+        /* Animation for page load */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tool-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .tool-card:nth-child(1) { animation-delay: 0.1s; }
+        .tool-card:nth-child(2) { animation-delay: 0.2s; }
+        .tool-card:nth-child(3) { animation-delay: 0.3s; }
+        .tool-card:nth-child(4) { animation-delay: 0.4s; }
+        .tool-card:nth-child(5) { animation-delay: 0.5s; }
+        .tool-card:nth-child(6) { animation-delay: 0.6s; }
+        .tool-card:nth-child(7) { animation-delay: 0.7s; }
+        .tool-card:nth-child(8) { animation-delay: 0.8s; }
+    </style>
 </head>
-
 <body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div>
+                        <h1>Multi Tool Hub</h1>
+                        <div class="tagline">All your digital tools in one place</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<div class="box">
-<h1>Age Calculator</h1>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Powerful Tools for Everyday Tasks</h2>
+            <p>Multi Tool Hub provides a collection of essential digital tools to simplify your work. From image processing to financial calculators, we have everything you need in one convenient location.</p>
+        </div>
+    </section>
 
-<input type="date" id="dob">
-<button onclick="calcAge()">Calculate Age</button>
+    <!-- Tools Section -->
+    <section class="tools-section">
+        <div class="container">
+            <h2 class="section-title">Our Tools Collection</h2>
+            <div class="tools-grid">
+                <!-- Tool Card 1: Image Converter -->
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3 class="tool-title">Image Converter</h3>
+                    <p class="tool-description">Convert images between different formats like JPG, PNG, WEBP, and more with high quality and fast processing.</p>
+                    <button class="tool-button" data-tool="Image Converter">
+                        <i class="fas fa-external-link-alt"></i> Use Tool
+                    </button>
+                </div>
 
-<p id="result"></p>
+                <!-- Tool Card 2: Image Compressor -->
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                    </div>
+                    <h3 class="tool-title">Image Compressor</h3>
+                    <p class="tool-description">Reduce image file sizes without noticeable quality loss. Perfect for web optimization and storage saving.</p>
+                    <button class="tool-button" data-tool="Image Compressor">
+                        <i class="fas fa-external-link-alt"></i> Use Tool
+                    </button>
+                </div>
 
-<h2>About this tool</h2>
-<p>This age calculator helps you calculate your exact age based on your date of birth.</p>
-</div>
+                <!-- Tool Card 3: Image Crop -->
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-crop"></i>
+                    </div>
+                    <h3 class="tool-title">Image Crop</h3>
+                    <p class="tool-description">Crop images to your desired dimensions with precision. Supports aspect ratio locking and freeform cropping.</p>
+                    <button class="tool-button" data-tool="Image Crop">
+                        <i class="fas fa-external-link-alt"></i> Use Tool
+                    </button>
+                </div>
 
-<script>
-function calcAge() {
-  let dob = new Date(document.getElementById("dob").value);
-  if (!dob.getTime()) {
-    document.getElementById("result").innerText = "Please select a date";
-    return;
-  }
-  let age = new Date().getFullYear() - dob.getFullYear();
-  document.getElementById("result").innerText = "Your age is " + age + " years";
-}
-</script>
+                <!-- Tool Card 4: Video Converter -->
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="tool-title">Video Converter</h3>
+                    <p class="tool-description">Convert video files between popular formats like MP4, AVI, MOV, MKV, and optimize for different devices.</p>
+                    <button class="tool-button" data-tool="Video Converter">
+                        <i class="fas fa-external-link-alt"></i> Use Tool
+                    </button>
+                </div>
 
+                <!-- Tool Card 5: Age Calculator -->
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-birthday-cake"></i>
+                    </div>
+                    <h3 class="tool-title">Age Calculator</h3>
+                    <p class="tool-description">Calculate exact age in years, months, and days. Perfect for tracking milestones and important dates.</p>
+                    <button class="tool-button" data-tool="Age Calculator">
+                        <i class="fas fa-external-link-alt"></i> Use Tool
+                    </button>
+                </div>
+
+                <!-- Tool Card 6: EMI Calculator -->
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 class="tool-title">EMI Calculator</h3>
+                    <p class="tool-description">Calculate Equated Monthly Installments for loans with different interest rates and tenure periods.</p>
+                    <button class="tool-button" data-tool="EMI Calculator">
+                        <i class="fas fa-external-link-alt"></i> Use Tool
+                    </button>
+                </div>
+
+                <!-- Tool Card 7: SIP Calculator -->
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="tool-title">SIP Calculator</h3>
+                    <p class="tool-description">Plan your Systematic Investment Plan returns with this advanced calculator for informed financial decisions.</p>
+                    <button class="tool-button" data-tool="SIP Calculator">
+                        <i class="fas fa-external-link-alt"></i> Use Tool
+                    </button>
+                </div>
+
+                <!-- Tool Card 8: Audio Trim -->
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3 class="tool-title">Audio Trim</h3>
+                    <p class="tool-description">Trim audio files with precision. Cut unwanted parts and extract specific segments from your audio recordings.</p>
+                    <button class="tool-button" data-tool="Audio Trim">
+                        <i class="fas fa-external-link-alt"></i> Use Tool
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>Multi Tool Hub &copy; <span id="currentYear"></span> | All Rights Reserved</p>
+                <p class="copyright">A comprehensive collection of digital tools for everyday tasks.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for button click alerts and dynamic year
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Add click event listeners to all tool buttons
+            const toolButtons = document.querySelectorAll('.tool-button');
+            
+            toolButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const toolName = this.getAttribute('data-tool');
+                    alert(`Redirecting to ${toolName}...\n\n(This is a placeholder. In a real application, this would navigate to the tool page.)`);
+                    
+                    // Add a visual feedback effect
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+            
+            // Add hover effect enhancement for tool cards
+            const toolCards = document.querySelectorAll('.tool-card');
+            
+            toolCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '10';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.zIndex = '1';
+                });
+            });
+            
+            // Add a subtle animation to the hero text
+            const heroTitle = document.querySelector('.hero h2');
+            heroTitle.style.opacity = '0';
+            heroTitle.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                heroTitle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                heroTitle.style.opacity = '1';
+                heroTitle.style.transform = 'translateY(0)';
+            }, 300);
+        });
+    </script>
 </body>
 </html>
