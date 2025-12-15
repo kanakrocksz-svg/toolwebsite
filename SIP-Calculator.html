@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIP Calculator | Multi Tool Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1E1E2F;
+            color: #EAEAEA;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2B2D42;
+            padding: 20px 0;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            color: #FFD700;
+            font-size: 28px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFD700;
+            letter-spacing: 0.5px;
+        }
+
+        .logo a {
+            text-decoration: none;
+            color: #EAEAEA;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .logo a:hover {
+            color: #FFD700;
+        }
+
+        /* Main Calculator Container */
+        .calculator-container {
+            background-color: #3A3D5B;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #FFD700;
+            font-size: 28px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .calculator-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: #FFD700;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Two Column Layout */
+        .calculator-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .calculator-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Input Section */
+        .input-section {
+            background-color: rgba(43, 45, 66, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            height: fit-content;
+        }
+
+        .section-title {
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 22px;
+        }
+
+        /* Input Groups */
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #EAEAEA;
+            font-weight: 500;
+        }
+
+        .input-value {
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        /* Slider Container */
+        .slider-container {
+            position: relative;
+            height: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, #1E1E2F, #FFD700);
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 3px solid #1E1E2F;
+            transition: all 0.2s;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 3px solid #1E1E2F;
+        }
+
+        /* Input Field */
+        .input-field {
+            background-color: #2B2D42;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 8px;
+            color: #EAEAEA;
+            padding: 12px 15px;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Toggle Container */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .toggle-option {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background-color: #2B2D42;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .toggle-option:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .toggle-option.active {
+            background-color: #FFD700;
+            border-color: #FFD700;
+            color: #1E1E2F;
+            font-weight: 600;
+        }
+
+        /* Investment Scenarios */
+        .scenarios-section {
+            margin-top: 30px;
+        }
+
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .scenarios-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .scenarios-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .scenario-btn {
+            background-color: #2B2D42;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .scenario-btn:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .scenario-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .scenario-desc {
+            font-size: 12px;
+            color: #B0B0C0;
+        }
+
+        /* Calculate Button */
+        .calculate-btn {
+            background-color: #FFD700;
+            color: #1E1E2F;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .calculate-btn:hover {
+            background-color: #E6C200;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Results Section */
+        .results-section {
+            background-color: rgba(43, 45, 66, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+        }
+
+        /* Corpus Display */
+        .corpus-display {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: rgba(30, 30, 47, 0.5);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .corpus-label {
+            font-size: 18px;
+            color: #B0B0C0;
+            margin-bottom: 10px;
+        }
+
+        .corpus-amount {
+            font-size: 48px;
+            font-weight: 800;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .corpus-period {
+            font-size: 16px;
+            color: #8888A0;
+        }
+
+        /* Breakdown Section */
+        .breakdown-section {
+            margin-bottom: 30px;
+        }
+
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .breakdown-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .breakdown-item {
+            background-color: rgba(30, 30, 47, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .breakdown-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .breakdown-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .breakdown-label {
+            font-size: 14px;
+            color: #B0B0C0;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background-color: rgba(30, 30, 47, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            height: 300px;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        /* Yearly Breakdown */
+        .yearly-breakdown {
+            margin-top: 30px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .breakdown-table th {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: #FFD700;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            position: sticky;
+            top: 0;
+        }
+
+        .breakdown-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .breakdown-table tr:hover {
+            background-color: rgba(255, 215, 0, 0.05);
+        }
+
+        .table-toggle {
+            background-color: transparent;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .table-toggle:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Return Percentage */
+        .return-percentage {
+            text-align: center;
+            padding: 15px;
+            background-color: rgba(30, 30, 47, 0.5);
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .return-label {
+            font-size: 14px;
+            color: #B0B0C0;
+            margin-bottom: 5px;
+        }
+
+        .return-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        /* Error Message */
+        .error-message {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #f8d7da;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        /* Info Message */
+        .info-message {
+            background-color: rgba(13, 110, 253, 0.2);
+            color: #cfe2ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #0d6efd;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #8888A0;
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .calculator-container {
+                padding: 20px;
+            }
+            
+            .input-section, .results-section {
+                padding: 20px;
+            }
+            
+            .corpus-amount {
+                font-size: 36px;
+            }
+            
+            .calculate-btn {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+            
+            .breakdown-table {
+                font-size: 12px;
+            }
+            
+            .breakdown-table th,
+            .breakdown-table td {
+                padding: 8px 10px;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .calculator-title {
+                font-size: 24px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .toggle-container {
+                flex-direction: column;
+            }
+            
+            .return-value {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div>
+                        <h1>SIP Calculator</h1>
+                        <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Multi Tool Hub</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Calculator -->
+        <div class="calculator-container">
+            <h2 class="calculator-title">Plan Your Systematic Investment</h2>
+            
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i> <span id="errorText"></span>
+            </div>
+            
+            <!-- Two Column Layout -->
+            <div class="calculator-layout">
+                <!-- Input Section -->
+                <div class="input-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-chart-line"></i> Investment Details
+                    </h3>
+                    
+                    <!-- Monthly Investment -->
+                    <div class="input-group">
+                        <div class="input-label">
+                            <span>Monthly Investment</span>
+                            <span class="input-value" id="monthlyInvestmentValue">₹5,000</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" class="range-slider" id="monthlyInvestmentSlider" 
+                                   min="500" max="100000" step="500" value="5000">
+                        </div>
+                        <input type="number" class="input-field" id="monthlyInvestmentInput" 
+                               placeholder="Enter monthly investment" value="5000">
+                    </div>
+                    
+                    <!-- Expected Annual Return -->
+                    <div class="input-group">
+                        <div class="input-label">
+                            <span>Expected Annual Return</span>
+                            <span class="input-value" id="expectedReturnValue">12%</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" class="range-slider" id="expectedReturnSlider" 
+                                   min="1" max="30" step="0.1" value="12">
+                        </div>
+                        <input type="number" class="input-field" id="expectedReturnInput" 
+                               placeholder="Enter expected return" value="12">
+                    </div>
+                    
+                    <!-- Investment Tenure -->
+                    <div class="input-group">
+                        <div class="input-label">
+                            <span>Investment Tenure</span>
+                            <span class="input-value" id="investmentTenureValue">10 Years</span>
+                        </div>
+                        <div class="toggle-container">
+                            <div class="toggle-option active" id="tenureYears">Years</div>
+                            <div class="toggle-option" id="tenureMonths">Months</div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" class="range-slider" id="investmentTenureSlider" 
+                                   min="1" max="30" step="1" value="10">
+                        </div>
+                        <input type="number" class="input-field" id="investmentTenureInput" 
+                               placeholder="Enter investment tenure" value="10">
+                    </div>
+                    
+                    <!-- Investment Scenarios -->
+                    <div class="scenarios-section">
+                        <h4 class="section-title" style="font-size: 16px; margin-bottom: 15px;">
+                            <i class="fas fa-lightbulb"></i> Quick Scenarios
+                        </h4>
+                        <div class="scenarios-grid">
+                            <div class="scenario-btn" data-investment="3000" data-return="10" data-tenure="5">
+                                <div class="scenario-name">Conservative</div>
+                                <div class="scenario-desc">₹3K/month, 10%, 5Y</div>
+                            </div>
+                            <div class="scenario-btn" data-investment="5000" data-return="12" data-tenure="10">
+                                <div class="scenario-name">Moderate</div>
+                                <div class="scenario-desc">₹5K/month, 12%, 10Y</div>
+                            </div>
+                            <div class="scenario-btn" data-investment="10000" data-return="15" data-tenure="15">
+                                <div class="scenario-name">Aggressive</div>
+                                <div class="scenario-desc">₹10K/month, 15%, 15Y</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Calculate Button -->
+                    <button class="calculate-btn" id="calculateBtn">
+                        <i class="fas fa-calculator"></i> Calculate SIP Returns
+                    </button>
+                    
+                    <!-- Info Message -->
+                    <div class="info-message">
+                        <i class="fas fa-info-circle"></i> 
+                        SIP involves periodic investments. Past performance is not indicative of future results.
+                    </div>
+                </div>
+                
+                <!-- Results Section -->
+                <div class="results-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-chart-pie"></i> Investment Summary
+                    </h3>
+                    
+                    <!-- Corpus Display -->
+                    <div class="corpus-display">
+                        <div class="corpus-label">Estimated Corpus</div>
+                        <div class="corpus-amount" id="corpusAmount">₹0</div>
+                        <div class="corpus-period" id="corpusPeriod">after 0 years</div>
+                    </div>
+                    
+                    <!-- Return Percentage -->
+                    <div class="return-percentage">
+                        <div class="return-label">Return on Investment</div>
+                        <div class="return-value" id="returnPercentage">0%</div>
+                    </div>
+                    
+                    <!-- Breakdown Section -->
+                    <div class="breakdown-section">
+                        <h4 class="section-title" style="font-size: 16px; margin-bottom: 15px;">
+                            <i class="fas fa-chart-bar"></i> Investment Breakdown
+                        </h4>
+                        <div class="breakdown-grid">
+                            <div class="breakdown-item">
+                                <div class="breakdown-value" id="totalInvestment">₹0</div>
+                                <div class="breakdown-label">Total Invested</div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-value" id="totalReturns">₹0</div>
+                                <div class="breakdown-label">Wealth Gained</div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-value" id="finalCorpus">₹0</div>
+                                <div class="breakdown-label">Final Corpus</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart Section -->
+                    <div class="chart-section">
+                        <h4 class="section-title" style="font-size: 16px; margin-bottom: 15px;">
+                            <i class="fas fa-chart-area"></i> Investment Growth
+                        </h4>
+                        <div class="chart-container">
+                            <canvas id="growthChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Yearly Breakdown -->
+                    <div class="yearly-breakdown">
+                        <h4 class="section-title" style="font-size: 16px; margin-bottom: 15px;">
+                            <i class="fas fa-table"></i> Yearly Breakdown
+                        </h4>
+                        <button class="table-toggle" id="tableToggle">
+                            <i class="fas fa-chevron-down"></i> Show Yearly Breakdown
+                        </button>
+                        <div class="table-container" id="tableContainer" style="display: none;">
+                            <table class="breakdown-table">
+                                <thead>
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>Invested</th>
+                                        <th>Returns</th>
+                                        <th>Total Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="yearlyTableBody">
+                                    <!-- Table rows will be generated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <p>Multi Tool Hub &copy; <span id="currentYear"></span> | SIP Calculator Tool</p>
+            <p>Start small, invest regularly, and watch your wealth grow over time!</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const monthlyInvestmentSlider = document.getElementById('monthlyInvestmentSlider');
+        const monthlyInvestmentInput = document.getElementById('monthlyInvestmentInput');
+        const monthlyInvestmentValue = document.getElementById('monthlyInvestmentValue');
+        
+        const expectedReturnSlider = document.getElementById('expectedReturnSlider');
+        const expectedReturnInput = document.getElementById('expectedReturnInput');
+        const expectedReturnValue = document.getElementById('expectedReturnValue');
+        
+        const investmentTenureSlider = document.getElementById('investmentTenureSlider');
+        const investmentTenureInput = document.getElementById('investmentTenureInput');
+        const investmentTenureValue = document.getElementById('investmentTenureValue');
+        const tenureYears = document.getElementById('tenureYears');
+        const tenureMonths = document.getElementById('tenureMonths');
+        
+        const calculateBtn = document.getElementById('calculateBtn');
+        const scenarioButtons = document.querySelectorAll('.scenario-btn');
+        
+        const corpusAmount = document.getElementById('corpusAmount');
+        const corpusPeriod = document.getElementById('corpusPeriod');
+        const returnPercentage = document.getElementById('returnPercentage');
+        const totalInvestment = document.getElementById('totalInvestment');
+        const totalReturns = document.getElementById('totalReturns');
+        const finalCorpus = document.getElementById('finalCorpus');
+        
+        const tableToggle = document.getElementById('tableToggle');
+        const tableContainer = document.getElementById('tableContainer');
+        const yearlyTableBody = document.getElementById('yearlyTableBody');
+        
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+
+        // Variables
+        let isTenureInYears = true;
+        let growthChart = null;
+        let chartData = {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Investment Value',
+                    data: [],
+                    borderColor: '#FFD700',
+                    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Amount Invested',
+                    data: [],
+                    borderColor: '#4CAF50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        };
+
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Initialize with default calculation
+        window.addEventListener('load', function() {
+            updateValuesFromInputs();
+            calculateSIP();
+            initializeChart();
+        });
+
+        // Event Listeners for Sliders
+        monthlyInvestmentSlider.addEventListener('input', function() {
+            monthlyInvestmentInput.value = this.value;
+            updateMonthlyInvestmentValue(this.value);
+            calculateSIP();
+        });
+
+        expectedReturnSlider.addEventListener('input', function() {
+            expectedReturnInput.value = this.value;
+            updateExpectedReturnValue(this.value);
+            calculateSIP();
+        });
+
+        investmentTenureSlider.addEventListener('input', function() {
+            investmentTenureInput.value = this.value;
+            updateInvestmentTenureValue(this.value);
+            calculateSIP();
+        });
+
+        // Event Listeners for Inputs
+        monthlyInvestmentInput.addEventListener('input', function() {
+            const value = Math.min(Math.max(this.value, 500), 100000);
+            monthlyInvestmentSlider.value = value;
+            updateMonthlyInvestmentValue(value);
+            calculateSIP();
+        });
+
+        expectedReturnInput.addEventListener('input', function() {
+            const value = Math.min(Math.max(this.value, 1), 30);
+            expectedReturnSlider.value = value;
+            updateExpectedReturnValue(value);
+            calculateSIP();
+        });
+
+        investmentTenureInput.addEventListener('input', function() {
+            const maxValue = isTenureInYears ? 30 : 360;
+            const value = Math.min(Math.max(this.value, 1), maxValue);
+            investmentTenureSlider.max = maxValue;
+            investmentTenureSlider.value = value;
+            updateInvestmentTenureValue(value);
+            calculateSIP();
+        });
+
+        // Event Listeners for Tenure Toggle
+        tenureYears.addEventListener('click', function() {
+            if (!isTenureInYears) {
+                isTenureInYears = true;
+                tenureYears.classList.add('active');
+                tenureMonths.classList.remove('active');
+                
+                // Convert months to years
+                const months = parseInt(investmentTenureInput.value);
+                const years = Math.ceil(months / 12);
+                investmentTenureInput.value = years;
+                investmentTenureSlider.max = 30;
+                investmentTenureSlider.value = years;
+                updateInvestmentTenureValue(years);
+                calculateSIP();
+            }
+        });
+
+        tenureMonths.addEventListener('click', function() {
+            if (isTenureInYears) {
+                isTenureInYears = false;
+                tenureYears.classList.remove('active');
+                tenureMonths.classList.add('active');
+                
+                // Convert years to months
+                const years = parseInt(investmentTenureInput.value);
+                const months = years * 12;
+                investmentTenureInput.value = months;
+                investmentTenureSlider.max = 360;
+                investmentTenureSlider.value = months;
+                updateInvestmentTenureValue(months);
+                calculateSIP();
+            }
+        });
+
+        // Event Listeners for Scenario Buttons
+        scenarioButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const investment = this.getAttribute('data-investment');
+                const returnRate = this.getAttribute('data-return');
+                const tenure = this.getAttribute('data-tenure');
+                
+                // Set values
+                monthlyInvestmentInput.value = investment;
+                monthlyInvestmentSlider.value = investment;
+                updateMonthlyInvestmentValue(investment);
+                
+                expectedReturnInput.value = returnRate;
+                expectedReturnSlider.value = returnRate;
+                updateExpectedReturnValue(returnRate);
+                
+                // Ensure tenure is in years
+                if (!isTenureInYears) {
+                    isTenureInYears = true;
+                    tenureYears.classList.add('active');
+                    tenureMonths.classList.remove('active');
+                    investmentTenureSlider.max = 30;
+                }
+                
+                investmentTenureInput.value = tenure;
+                investmentTenureSlider.value = tenure;
+                updateInvestmentTenureValue(tenure);
+                
+                // Calculate
+                calculateSIP();
+                
+                // Add visual feedback
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Table Toggle
+        tableToggle.addEventListener('click', function() {
+            if (tableContainer.style.display === 'none') {
+                tableContainer.style.display = 'block';
+                tableToggle.innerHTML = '<i class="fas fa-chevron-up"></i> Hide Yearly Breakdown';
+                generateYearlyBreakdown();
+            } else {
+                tableContainer.style.display = 'none';
+                tableToggle.innerHTML = '<i class="fas fa-chevron-down"></i> Show Yearly Breakdown';
+            }
+        });
+
+        // Functions
+        function updateMonthlyInvestmentValue(value) {
+            monthlyInvestmentValue.textContent = formatCurrency(value);
+        }
+
+        function updateExpectedReturnValue(value) {
+            expectedReturnValue.textContent = `${parseFloat(value).toFixed(1)}%`;
+        }
+
+        function updateInvestmentTenureValue(value) {
+            if (isTenureInYears) {
+                investmentTenureValue.textContent = `${value} Year${value > 1 ? 's' : ''}`;
+            } else {
+                investmentTenureValue.textContent = `${value} Month${value > 1 ? 's' : ''}`;
+            }
+        }
+
+        function updateValuesFromInputs() {
+            updateMonthlyInvestmentValue(monthlyInvestmentInput.value);
+            updateExpectedReturnValue(expectedReturnInput.value);
+            updateInvestmentTenureValue(investmentTenureInput.value);
+        }
+
+        function initializeChart() {
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            
+            growthChart = new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#EAEAEA',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${formatCurrency(context.raw)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#B0B0C0'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#B0B0C0',
+                                callback: function(value) {
+                                    if (value >= 10000000) return '₹' + (value / 10000000).toFixed(1) + 'Cr';
+                                    if (value >= 100000) return '₹' + (value / 100000).toFixed(1) + 'L';
+                                    if (value >= 1000) return '₹' + (value / 1000).toFixed(1) + 'K';
+                                    return '₹' + value;
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'nearest'
+                    }
+                }
+            });
+        }
+
+        function calculateSIP() {
+            // Get values
+            const monthlyInvestment = parseFloat(monthlyInvestmentInput.value);
+            const annualReturn = parseFloat(expectedReturnInput.value);
+            let tenure = parseFloat(investmentTenureInput.value);
+            
+            // Validate inputs
+            if (!monthlyInvestment || !annualReturn || !tenure) {
+                showError('Please enter valid values for all fields.');
+                return;
+            }
+            
+            if (monthlyInvestment < 500) {
+                showError('Monthly investment must be at least ₹500.');
+                return;
+            }
+            
+            // Convert tenure to months if in years
+            const tenureMonths = isTenureInYears ? tenure * 12 : tenure;
+            const monthlyRate = annualReturn / 12 / 100;
+            
+            // SIP Formula: FV = P × [((1 + r)^n - 1) / r] × (1 + r)
+            let futureValue;
+            if (monthlyRate === 0) {
+                // Handle zero interest rate
+                futureValue = monthlyInvestment * tenureMonths;
+            } else {
+                futureValue = monthlyInvestment * 
+                            (Math.pow(1 + monthlyRate, tenureMonths) - 1) / 
+                            monthlyRate * 
+                            (1 + monthlyRate);
+            }
+            
+            // Calculate totals
+            const totalInvested = monthlyInvestment * tenureMonths;
+            const wealthGained = futureValue - totalInvested;
+            const returnPercent = totalInvested > 0 ? (wealthGained / totalInvested) * 100 : 0;
+            
+            // Update display
+            corpusAmount.textContent = formatCurrency(futureValue);
+            corpusPeriod.textContent = `after ${isTenureInYears ? tenure + ' year' + (tenure > 1 ? 's' : '') : tenureMonths + ' month' + (tenureMonths > 1 ? 's' : '')}`;
+            returnPercentage.textContent = `${returnPercent.toFixed(1)}%`;
+            totalInvestment.textContent = formatCurrency(totalInvested);
+            totalReturns.textContent = formatCurrency(wealthGained);
+            finalCorpus.textContent = formatCurrency(futureValue);
+            
+            // Update chart
+            updateChartData(monthlyInvestment, annualReturn, tenureMonths);
+            
+            // Clear any errors
+            hideError();
+        }
+
+        function updateChartData(monthlyInvestment, annualReturn, tenureMonths) {
+            const monthlyRate = annualReturn / 12 / 100;
+            chartData.labels = [];
+            chartData.datasets[0].data = [];
+            chartData.datasets[1].data = [];
+            
+            let accumulatedValue = 0;
+            let totalInvested = 0;
+            
+            // Generate data for each year (or month for shorter durations)
+            const step = tenureMonths <= 12 ? 1 : 12; // Monthly for 1 year, yearly for longer
+            const steps = tenureMonths <= 12 ? tenureMonths : Math.ceil(tenureMonths / 12);
+            
+            for (let i = 1; i <= steps; i++) {
+                const months = tenureMonths <= 12 ? i : i * 12;
+                const actualMonths = Math.min(months, tenureMonths);
+                
+                // Calculate SIP value up to this point
+                let periodValue;
+                if (monthlyRate === 0) {
+                    periodValue = monthlyInvestment * actualMonths;
+                } else {
+                    periodValue = monthlyInvestment * 
+                                (Math.pow(1 + monthlyRate, actualMonths) - 1) / 
+                                monthlyRate * 
+                                (1 + monthlyRate);
+                }
+                
+                const periodInvested = monthlyInvestment * actualMonths;
+                
+                chartData.labels.push(tenureMonths <= 12 ? `Month ${i}` : `Year ${i}`);
+                chartData.datasets[0].data.push(periodValue);
+                chartData.datasets[1].data.push(periodInvested);
+            }
+            
+            if (growthChart) {
+                growthChart.update();
+            }
+        }
+
+        function generateYearlyBreakdown() {
+            // Clear previous table
+            yearlyTableBody.innerHTML = '';
+            
+            // Get values
+            const monthlyInvestment = parseFloat(monthlyInvestmentInput.value);
+            const annualReturn = parseFloat(expectedReturnInput.value);
+            let tenure = parseFloat(investmentTenureInput.value);
+            const tenureMonths = isTenureInYears ? tenure * 12 : tenure;
+            const monthlyRate = annualReturn / 12 / 100;
+            
+            if (!monthlyInvestment || !annualReturn || !tenure) return;
+            
+            // Generate yearly breakdown
+            const years = Math.ceil(tenureMonths / 12);
+            let cumulativeInvestment = 0;
+            let cumulativeValue = 0;
+            
+            for (let year = 1; year <= years; year++) {
+                const monthsThisYear = Math.min(12, tenureMonths - ((year - 1) * 12));
+                
+                // Calculate value at end of year
+                let yearEndValue;
+                if (monthlyRate === 0) {
+                    yearEndValue = monthlyInvestment * monthsThisYear;
+                } else {
+                    // Calculate value from beginning of period
+                    const totalMonths = (year - 1) * 12 + monthsThisYear;
+                    yearEndValue = monthlyInvestment * 
+                                 (Math.pow(1 + monthlyRate, totalMonths) - 1) / 
+                                 monthlyRate * 
+                                 (1 + monthlyRate);
+                }
+                
+                // Calculate investment this year
+                const yearInvestment = monthlyInvestment * monthsThisYear;
+                cumulativeInvestment += yearInvestment;
+                
+                // Calculate returns this year
+                const yearReturns = yearEndValue - cumulativeInvestment;
+                
+                // Create table row
+                const row = document.createElement('tr');
+                
+                const yearCell = document.createElement('td');
+                yearCell.textContent = year;
+                
+                const investmentCell = document.createElement('td');
+                investmentCell.textContent = formatCurrency(yearInvestment);
+                
+                const returnsCell = document.createElement('td');
+                returnsCell.textContent = formatCurrency(yearReturns);
+                returnsCell.style.color = yearReturns >= 0 ? '#4CAF50' : '#f44336';
+                
+                const totalCell = document.createElement('td');
+                totalCell.textContent = formatCurrency(yearEndValue);
+                
+                row.appendChild(yearCell);
+                row.appendChild(investmentCell);
+                row.appendChild(returnsCell);
+                row.appendChild(totalCell);
+                
+                yearlyTableBody.appendChild(row);
+                
+                cumulativeValue = yearEndValue;
+            }
+        }
+
+        function formatCurrency(amount) {
+            // Format as Indian Rupees
+            if (amount >= 10000000) {
+                return '₹' + (amount / 10000000).toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2
+                }) + ' Cr';
+            } else if (amount >= 100000) {
+                return '₹' + (amount / 100000).toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2
+                }) + ' L';
+            } else {
+                return '₹' + amount.toLocaleString('en-IN', {
+                    maximumFractionDigits: 0,
+                    minimumFractionDigits: 0
+                });
+            }
+        }
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.add('active');
+            
+            // Auto-hide error after 5 seconds
+            setTimeout(() => {
+                hideError();
+            }, 5000);
+        }
+
+        function hideError() {
+            errorMessage.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
